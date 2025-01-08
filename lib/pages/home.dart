@@ -12,10 +12,11 @@ class HomePage extends StatelessWidget {
           Container(
             margin: EdgeInsets.only(top: 40, left: 25, right: 25),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
               boxShadow: [
                 BoxShadow(
-                    color: Color(0xFF1D1617)
+                  color: Color(0xACABABFF),
+                  blurRadius: 5,
+                  spreadRadius: 0.0
                 )
               ],
             ),
@@ -23,7 +24,16 @@ class HomePage extends StatelessWidget {
               decoration: InputDecoration(
                 filled: true,
                 fillColor: Colors.white,
-
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15),
+                  borderSide: BorderSide.none,
+                ),
+                contentPadding: EdgeInsets.all(15),
+                prefixIcon: Padding(
+                  padding: EdgeInsets.all(5),
+                  child: Icon(Icons.search_outlined, size: 30,),
+                ),
+                suffixIcon: Icon(Icons.filter_list_alt, size: 30,),
               ),
             ),
           )
