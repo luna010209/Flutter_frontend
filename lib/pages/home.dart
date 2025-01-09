@@ -1,42 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_frontend/models/category.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  HomePage({super.key});
+
+  List<CategoryModel> categories = [];
+  void _getCategories(){
+    categories = CategoryModel.getCategories();
+  }
 
   @override
   Widget build(BuildContext context) {
+    _getCategories();
     return Scaffold(
       appBar: appBar(),
       body: Column(
-        children: [
-          Container(
-            margin: EdgeInsets.only(top: 40, left: 25, right: 25),
-            decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  color: Color(0xACABABFF),
-                  blurRadius: 5,
-                  spreadRadius: 0.0
-                )
-              ],
-            ),
-            child: TextField(
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.white,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                  borderSide: BorderSide.none,
-                ),
-                contentPadding: EdgeInsets.all(15),
-                prefixIcon: Padding(
-                  padding: EdgeInsets.all(5),
-                  child: Icon(Icons.search_outlined, size: 30,),
-                ),
-                suffixIcon: Icon(Icons.filter_list_alt, size: 30,),
-              ),
-            ),
-          )
+          children: [
+          _searchField(),
+          SizedBox(height: 35,),
+          _categories(),
+          SizedBox(height: 35,),
+
         ],
       ),
     );
@@ -91,6 +75,107 @@ class HomePage extends StatelessWidget {
             ),
           )
         ]
+    );
+  }
+
+  // Body of app
+  Container _searchField(){
+    return Container(
+      margin: EdgeInsets.only(top: 40, left: 25, right: 25),
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+              color: Color(0xACABABFF),
+              blurRadius: 5,
+              spreadRadius: 0.0
+          )
+        ],
+      ),
+      child: TextField(
+        decoration: InputDecoration(
+          filled: true,
+          fillColor: Colors.white,
+          hintText: 'Search Bread',
+          hintStyle: TextStyle(
+            color: Colors.grey,
+            fontSize: 18,
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(15),
+            borderSide: BorderSide.none,
+          ),
+          contentPadding: EdgeInsets.all(15),
+          prefixIcon: Padding(
+            padding: EdgeInsets.all(5),
+            child: Icon(Icons.search_outlined, size: 30,),
+          ),
+          suffixIcon: Icon(Icons.filter_list_alt, size: 30,),
+        ),
+      ),
+    );
+  }
+
+  Column _categories(){
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.only(left: 25),
+          child: Text(
+            'Category',
+            textAlign: TextAlign.left,
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+        SizedBox(height: 20,),
+        Container(
+          height: 150,
+          child: ListView.separated(
+              itemCount: categories.length,
+              scrollDirection: Axis.horizontal,
+              separatorBuilder: (context, index)=> SizedBox(width: 20,),
+              padding: EdgeInsets.only(left: 30, right: 30),
+              itemBuilder: (context, index){
+                return Container(
+                  width: 120,
+                  decoration: BoxDecoration(
+                    color: categories[index].boxColor,
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Container(
+                          height: 50,
+                          width: 50,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.all(5),
+                            child: Image.asset(categories[index].iconPath),
+                          )
+                      ),
+                      Text(
+                        categories[index].name,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                        textAlign: TextAlign.center,
+                      )
+                    ],
+                  ),
+                );
+              }
+          ),
+        )
+      ],
     );
   }
 }
